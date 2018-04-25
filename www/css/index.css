@@ -26,26 +26,6 @@ body {
 }
 
 
-/* Portrait layout (default) */
-
-.app {
-    position: absolute;
-    /* position in the center of the screen */
-    left: 50%;
-    top: 50%;
-    height: 50px;
-    /* text area height */
-    width: 225px;
-    /* text area width */
-    text-align: center;
-    padding: 180px 0px 0px 0px;
-    /* image height is 200px (bottom 20px are overlapped with text) */
-    margin: -115px 0px 0px -112px;
-    /* offset vertical: half of image height and text area height */
-    /* offset horizontal: half of text area width */
-}
-
-
 /* Landscape layout (with min-width) */
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
@@ -139,7 +119,7 @@ button {
 
 button {
     background: none;
-    border: 0px;
+    border: 1px;
     color: rgb(47, 71, 82);
     font-size: 15px;
     width: 60px;
@@ -157,7 +137,7 @@ button:hover {
 
 h3,
 label[for='new-task'] {
-    color: #333;
+    color: rgb(85, 72, 72);
     font-weight: 700;
     font-size: 15px;
     border-bottom: 2px solid #333;
@@ -176,7 +156,7 @@ input[type="text"] {
     background: #fff;
     border-radius: 6px;
     font-family: Lato, sans-serif;
-    color: #888;
+    color: rgb(61, 127, 172);
 }
 
 input[type="text"]:focus {
@@ -235,7 +215,7 @@ li>.delete:hover {
 
 #completed-tasks label {
     text-decoration: line-through;
-    color: rgb(105, 226, 145);
+    color: rgb(97, 56, 49);
 }
 
 
