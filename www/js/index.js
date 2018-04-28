@@ -2,6 +2,13 @@ var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        //this.saveList();
+        var taskInput = document.getElementById("new-task");
+        var addButton = document.getElementsByTagName("button")[0];
+        var incompleteTasksHolder = document.getElementById("incomplete-tasks");
+        var completedTasksHolder = document.getElementById("completed-tasks");
+
+        
     },
 
     // deviceready Event Handler
@@ -9,31 +16,29 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
-        this.receivedEvent('deviceready');
-    },
-
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    },
-
-};
 
 
-var taskInput = document.getElementById("new-task");
-var addButton = document.getElementsByTagName("button")[0];
-var incompleteTasksHolder = document.getElementById("incomplete-tasks");
-var completedTasksHolder = document.getElementById("completed-tasks");
+    // Set the click handler to the addTask function
+    addButton.addEventListener("click", addTask);
+    addButton.addEventListener("click", ajaxRequest);
+
+
+    // Cycle over the incompleteTaskHolder ul list items
+    for (var i = 0; i < incompleteTasksHolder.children.length; i++) {
+        // bind events to list item's children (taskCompleted)
+        bindTaskEvents(incompleteTasksHolder.children[i], taskCompleted);
+    }
+    // Cycle over the completeTaskHolder ul list items
+    for (var i = 0; i < completedTasksHolder.children.length; i++) {
+        // bind events to list item's children (taskIncompleted)
+        bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
+
+    }
+
+        },
 
 //New Task List Item
-var createNewTaskElement = function(taskString) {
+createNewTaskElement : function(taskString) {
     //Create List Item
     var listItem = document.createElement("li");
 
@@ -69,10 +74,10 @@ var createNewTaskElement = function(taskString) {
     listItem.appendChild(deleteButton);
 
     return listItem;
-}
+},
 
 // Add a new task
-var addTask = function() {
+addTask : function() {
     console.log("Add task...");
     //Create a new list item with the text from #new-task:
     var listItem = createNewTaskElement(taskInput.value);
@@ -81,10 +86,10 @@ var addTask = function() {
     bindTaskEvents(listItem, taskCompleted);
 
     taskInput.value = "";
-}
+},
 
 // Edit an existing task
-var editTask = function() {
+editTask : function() {
     console.log("Edit Task...");
 
     var listItem = this.parentNode;
@@ -107,39 +112,39 @@ var editTask = function() {
     // Toggle .editMode on the parent
     listItem.classList.toggle("editMode");
 
-}
+},
 
 
 // Delete an existing task
-var deleteTask = function() {
+deleteTask : function() {
     console.log("Delete task...");
     var listItem = this.parentNode;
     var ul = listItem.parentNode;
 
     //Remove the parent list item from the ul
     ul.removeChild(listItem);
-}
+},
 
 // Mark a task as complete 
-var taskCompleted = function() {
+taskCompleted : function() {
     console.log("Task complete...");
     //Append the task list item to the #completed-tasks
     var listItem = this.parentNode;
     completedTasksHolder.appendChild(listItem);
     bindTaskEvents(listItem, taskIncomplete);
-}
+},
 
 // Mark a task as incomplete
-var taskIncomplete = function() {
+taskIncomplete : function() {
     console.log("Task Incomplete...");
     // When checkbox is unchecked
     // Append the task list item #incomplete-tasks
     var listItem = this.parentNode;
     incompleteTasksHolder.appendChild(listItem);
     bindTaskEvents(listItem, taskCompleted);
-}
+},
 
-var bindTaskEvents = function(taskListItem, checkBoxEventHandler) {
+bindTaskEvents : function(taskListItem, checkBoxEventHandler) {
     console.log("Bind list item events");
     //select taskListItem's children
     var checkBox = taskListItem.querySelector("input[type=checkbox]");
@@ -154,28 +159,23 @@ var bindTaskEvents = function(taskListItem, checkBoxEventHandler) {
 
     //bind checkBoxEventHandler to checkbox
     checkBox.onchange = checkBoxEventHandler;
-}
+},
 
-var ajaxRequest = function() {
+ajaxRequest : function() {
     console.log("AJAX Request");
-}
+},
 
-// Set the click handler to the addTask function
-//addButton.onclick = addTask;
-addButton.addEventListener("click", addTask);
-addButton.addEventListener("click", ajaxRequest);
+/* saveList : function(){
+    if (typeof(Storage) !== "undefined") {
+        // Store
+        localStorage.setItem("lastname", "Smith");
+        // Retrieve
+        document.getElementById("list").innerHTML = localStorage.getItem("lastname");
+    } else {
+        document.getElementById("list").innerHTML = "Sorry, your browser does not support Web Storage...";
+    }
+} */
+};
 
-
-// Cycle over the incompleteTaskHolder ul list items
-for (var i = 0; i < incompleteTasksHolder.children.length; i++) {
-    // bind events to list item's children (taskCompleted)
-    bindTaskEvents(incompleteTasksHolder.children[i], taskCompleted);
-}
-// Cycle over the completeTaskHolder ul list items
-for (var i = 0; i < completedTasksHolder.children.length; i++) {
-    // bind events to list item's children (taskIncompleted)
-    bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
-
-}
 
 app.initialize();
